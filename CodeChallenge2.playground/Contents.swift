@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-class CodingChallenge2 {
+class Challenge2 {
     static func fixPriceLabel(_ priceLabel: String) -> String {
         let numbers = filter(priceLabel
             .lowercased()
@@ -49,7 +49,7 @@ class CodingChallenge2 {
     }
 }
 
-CodingChallenge2.fixPriceLabel("Was £10, then £11, then £8, now £6")
+Challenge2.fixPriceLabel("Was £10, then £11, then £8, now £6")
 
 class CodeChallenge2Tests: XCTestCase {
     
@@ -57,27 +57,33 @@ class CodeChallenge2Tests: XCTestCase {
     
     func test_fixPriceLabel_inputDoesntChange_formatCorrect() {
         let input = "Was £10.00, then £9, then £8, now £6.50"
-        XCTAssertEqual(CodingChallenge2.fixPriceLabel(input), input)
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), input)
     }
     
     func test_fixPriceLabel_nowOnly() {
         let input = "Was £10.00, then £9, then £8, now £16.50"
-        XCTAssertEqual(CodingChallenge2.fixPriceLabel(input), "Now £16.50")
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Now £16.50")
     }
     
     func test_fixPriceLabel_wasnowOnly() {
         let input = "Was £17.00, then £9, then £8, now £16.50"
-        XCTAssertEqual(CodingChallenge2.fixPriceLabel(input), "Was £17.00, now £16.50")
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £17.00, now £16.50")
     }
     
     func test_fixPriceLabel_wasthennowOnly() {
         let input = "Was £17.00, then £9, then £12.00, now £11.50"
-        XCTAssertEqual(CodingChallenge2.fixPriceLabel(input), "Was £17.00, then £12.00, now £11.50")
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £17.00, then £12.00, now £11.50")
     }
     
     func test_fixPriceLabel_nowOnlyInput() {
         let input = "Now £11.50"
-        XCTAssertEqual(CodingChallenge2.fixPriceLabel(input), "Now £11.50")
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Now £11.50")
+    }
+    
+    func test_fixPriceLabel_InvalidString() {
+        // SPEC says not to handle errors - so this proves it doesn't :)
+        let input = "Now invalid string"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Now £nvalid")
     }
 }
 
