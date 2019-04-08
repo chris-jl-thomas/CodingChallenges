@@ -75,6 +75,36 @@ class CodeChallenge2Tests: XCTestCase {
         XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £17.00, then £12.00, now £11.50")
     }
     
+    func test_fixPriceLabel_3rdIsHighest() {
+        let input = "Was £17.00, then £9, then £18.00, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £18.00, now £11.50")
+    }
+    
+    func test_fixPriceLabel_repeatingNumberDifferentFormat() {
+        let input = "Was £17.00, then £18, then £18.00, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £18.00, now £11.50")
+    }
+    
+    func test_fixPriceLabel_repeatingNumberSplitByHigherNumber() {
+        let input = "Was £18.00, then £19, then £18.00, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £19, then £18.00, now £11.50")
+    }
+    
+    func test_fixPriceLabel_repeatingNumberSplitByLowerNumber_takesSecondInstanceOfHigherNumber_keepDecimalFormatting() {
+        let input = "Was £18, then £17, then £18.00, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £18.00, now £11.50")
+    }
+    
+    func test_fixPriceLabel_repeatingNumberSplitByLowerNumber_takesSecondInstanceOfHigherNumber_KeepFormatting() {
+        let input = "Was £18.00, then £17, then £18, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £18, now £11.50")
+    }
+    
+    func test_fixPriceLabel_repeatingNumberSameFormat() {
+        let input = "Was £17.00, then £18.00, then £18.00, now £11.50"
+        XCTAssertEqual(Challenge2.fixPriceLabel(input), "Was £18.00, now £11.50")
+    }
+    
     func test_fixPriceLabel_nowOnlyInput() {
         let input = "Now £11.50"
         XCTAssertEqual(Challenge2.fixPriceLabel(input), "Now £11.50")
