@@ -14,13 +14,22 @@ typealias Board = [String]
 func processSokobanMove(_ board: Board, _ move: String) -> Board {
     guard let move = Move(rawValue: move) else { return board }
     
-    return board
+    return []
 }
 
 class CodeChallenge3Tests: XCTestCase {
     func test_returnsTheBoardIfDirectionalInputIsInvalid() {
         let result = processSokobanMove(["hello"], "z")
         XCTAssertEqual(result, ["hello"])
+    }
+    
+    func test_returnsTheBoardIfThePlayerCantMove() {
+        let result = processSokobanMove(["###",
+                                         "#p#",
+                                         "###"], "U")
+        XCTAssertEqual(result, ["###",
+                                "#p#",
+                                "###"])
     }
 }
 
