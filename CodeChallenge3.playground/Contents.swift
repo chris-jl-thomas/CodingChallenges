@@ -143,7 +143,7 @@ func getNewBoard(for move: Move, _ playerCoordinates: Coordinates, _ board: Cart
     var mutatableDictionary = board
     switch objectAtNewCoordinate {
     case .box:
-        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "P"
+        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "p"
         mutatableDictionary[playerCoordinates.y]?[playerCoordinates.x] = playerObject == .player ? " " : "*"
         
         let newBoxCoordinates = getDesiredCoordiantes(for: move, from: desiredNewCoordinates)
@@ -207,11 +207,6 @@ func processSokobanMove(_ board: Board, _ move: String) -> Board {
     return board
 }
 
-processSokobanMove(["####",
-                    "#p #",
-                    "#**#",
-                    "####"], "D")
-
 class CodeChallenge3Tests: XCTestCase {
     func test_returnsTheBoardIfDirectionalInputIsInvalid() {
         let result = processSokobanMove(["hello"], "z")
@@ -235,6 +230,70 @@ class CodeChallenge3Tests: XCTestCase {
                                 "#p#",
                                 "###"])
     }
+    
+    func test_returnsTheBoardIfThePlayerCantMoveUp() {
+        let result = processSokobanMove(["###",
+                                         "#p#",
+                                         "###"], "U")
+        XCTAssertEqual(result, ["###",
+                                "#p#",
+                                "###"])
+    }
+    
+    func test_returnsTheBoardIfThePlayerCantMoveDown() {
+        let result = processSokobanMove(["###",
+                                         "#p#",
+                                         "###"], "D")
+        XCTAssertEqual(result, ["###",
+                                "#p#",
+                                "###"])
+    }
+    
+    func test_returnsPforPlayerMovedOntoStorageAndLeavesBlankIfPlayerWasp() {
+        let result = processSokobanMove(["####",
+                                         "#*p#",
+                                         "####"], "L")
+        XCTAssertEqual(result, ["####",
+                                "#P #",
+                                "####"])
+    }
+    
+    func test_returnspforPlayerMovedOffOfStorageAndLeavesStorageIfPlayerWasP() {
+        let result = processSokobanMove(["####",
+                                         "# P#",
+                                         "####"], "L")
+        XCTAssertEqual(result, ["####",
+                                "#p*#",
+                                "####"])
+    }
+    
+    func test_returnsTheBoardIfPlayerCantMoveABox() {
+        let result = processSokobanMove(["#####",
+                                         "#bp #",
+                                         "#####"], "L")
+        XCTAssertEqual(result, ["#####",
+                                "#bp #",
+                                "#####"])
+    }
+    
+    func test_returnsBForBoxThatMovesToStorage() {
+        let result = processSokobanMove(["#####",
+                                         "#*bp#",
+                                         "#####"], "L")
+        XCTAssertEqual(result, ["#####",
+                                "#Bp #",
+                                "#####"])
+    }
+    
+    func test_returnsTheBoardIfWallIsntDefined() {
+        let result = processSokobanMove(["#####",
+                                         "#*b     p#",
+                                         "#####"], "U")
+        XCTAssertEqual(result, ["#####",
+                                "#*b     p#",
+                                "#####"])
+    }
+    
 }
 
 class TestObserver: NSObject, XCTestObservation {
