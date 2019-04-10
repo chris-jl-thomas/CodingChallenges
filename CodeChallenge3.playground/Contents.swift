@@ -6,7 +6,7 @@ enum Move: String {
     case down = "D"
     case left = "L"
     case right = "R"
-
+    
 }
 
 enum Object: String {
@@ -48,7 +48,7 @@ func getXForPlayer(_ plane: [Int: Character]) -> [Int: Character] {
         guard let object = Object(rawValue: String(value)) else { return false }
         switch object {
         case .player, .playerOnStorage:
-                return true
+            return true
         default:
             return false
         }
@@ -91,28 +91,6 @@ func getPlayerCoordinates(_ cartesianBoard: CartesianBoard) -> Coordinates? {
     return (x, y)
 }
 
-func getStorageCoordinates(_ cartesianBoard: CartesianBoard) -> [Coordinates] {
-    let yPlane = cartesianBoard.filter { (key: Int, value: [Int : Character]) -> Bool in
-        
-        let x = getXForStorage(value)
-        
-        if x.count >= 1 {
-            return true
-        }
-        return false
-    }
-    
-    var coordinates: [Coordinates] = []
-    yPlane.forEach { (yKey: Int, value: [Int : Character]) in
-        let xs = getXForStorage(value)
-        xs.keys.forEach{
-            coordinates.append(($0, yKey))
-        }
-    }
-    
-    return coordinates
-}
-
 func getDesiredCoordiantes(for move: Move, from coordinates: Coordinates) -> Coordinates {
     switch move {
     case .up:
@@ -130,17 +108,19 @@ func canMove(for move: Move, _ playerCoordinates: Coordinates, _ board: Cartesia
     let desiredNewCoordinates = getDesiredCoordiantes(for: move, from: playerCoordinates)
     guard let yPlane = board[desiredNewCoordinates.y],
         let characterAtNewCoordinate = yPlane[desiredNewCoordinates.x],
-        let object = Object(rawValue: String(characterAtNewCoordinate)) else { return true }
+        let objectAtNewCoordinate = Object(rawValue: String(characterAtNewCoordinate)) else { return true }
     
-    switch object {
-        case .box, .boxOnStorage:
-            break
-        case .storage:
-            return true
-        case .space:
-            return true
-        case .player, .playerOnStorage, .wall:
-            return false
+    switch objectAtNewCoordinate {
+    case .box:
+        break
+    case .boxOnStorage:
+        break
+    case .storage:
+        return true
+    case .space:
+        return true
+    case .player, .playerOnStorage, .wall:
+        return false
     }
     
     // cant move 2 boxes
@@ -151,34 +131,86 @@ func canMove(for move: Move, _ playerCoordinates: Coordinates, _ board: Cartesia
     return canMove(for: move, desiredNewCoordinates, board, .box)
 }
 
+func getNewBoard(for move: Move, _ playerCoordinates: Coordinates, _ board: CartesianBoard) -> CartesianBoard {
+    let desiredNewCoordinates = getDesiredCoordiantes(for: move, from: playerCoordinates)
+    guard let yPlane = board[desiredNewCoordinates.y],
+        let characterAtNewCoordinate = yPlane[desiredNewCoordinates.x],
+        let objectAtNewCoordinate = Object(rawValue: String(characterAtNewCoordinate)) else { return board }
+    
+    guard let playerCharacter = board[playerCoordinates.y]?[playerCoordinates.x],
+        let playerObject = Object(rawValue: String(playerCharacter)) else { return board }
+    
+    var mutatableDictionary = board
+    switch objectAtNewCoordinate {
+    case .box:
+        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "P"
+        mutatableDictionary[playerCoordinates.y]?[playerCoordinates.x] = playerObject == .player ? " " : "*"
+        
+        let newBoxCoordinates = getDesiredCoordiantes(for: move, from: desiredNewCoordinates)
+        guard let boxCharacter = board[newBoxCoordinates.y]?[newBoxCoordinates.x],
+            let boxObject = Object(rawValue: String(boxCharacter)) else { return board }
+        mutatableDictionary[newBoxCoordinates.y]?[newBoxCoordinates.x] = boxObject == .storage ? "B" : "b"
+        return mutatableDictionary
+    case .boxOnStorage:
+        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "P"
+        mutatableDictionary[playerCoordinates.y]?[playerCoordinates.x] = playerObject == .player ? " " : "*"
+        
+        let newBoxCoordinates = getDesiredCoordiantes(for: move, from: desiredNewCoordinates)
+        guard let boxCharacter = board[newBoxCoordinates.y]?[newBoxCoordinates.x],
+            let boxObject = Object(rawValue: String(boxCharacter)) else { return board }
+        mutatableDictionary[newBoxCoordinates.y]?[newBoxCoordinates.x] = boxObject == .storage ? "B" : "b"
+        return mutatableDictionary
+    case .storage:
+        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "P"
+        mutatableDictionary[playerCoordinates.y]?[playerCoordinates.x] = playerObject == .player ? " " : "*"
+        return mutatableDictionary
+    case .space:
+        mutatableDictionary[desiredNewCoordinates.y]?[desiredNewCoordinates.x] = "p"
+        mutatableDictionary[playerCoordinates.y]?[playerCoordinates.x] = playerObject == .player ? " " : "*"
+        return mutatableDictionary
+    case .player, .playerOnStorage, .wall:
+        return board
+    }
+}
+
+func createNewBoard(_ cartesianBoard: CartesianBoard) -> Board {
+    let sortedY = CartesianBoard(uniqueKeysWithValues: cartesianBoard.sorted{ $0.key < $1.key })
+    var newBoard: [String] = []
+    
+    for i in 0...sortedY.keys.count - 1 {
+        if let xplane = sortedY[i] {
+            let sortedX = [Int: Character](uniqueKeysWithValues: xplane.sorted{ $0.key < $1.key })
+            var newString: String = ""
+            for j in 0...sortedX.keys.count - 1 {
+                newString.append(String(sortedX[j]!))
+            }
+            newBoard.append(newString)
+        }
+        
+    }
+    return newBoard
+}
 
 func processSokobanMove(_ board: Board, _ move: String) -> Board {
     guard let move = Move(rawValue: move) else { return board }
     let cartesianBoard = createCartesianBoard(board)
     
-    let storageCoordinates = getStorageCoordinates(cartesianBoard)
-    // find the y position of player
     guard let playerCoordinates = getPlayerCoordinates(cartesianBoard) else { return board }
     
     let can = canMove(for: move, playerCoordinates, cartesianBoard)
     
-    print(can)
-    print(storageCoordinates)
-    print(playerCoordinates)
+    if can {
+        let newBoard = getNewBoard(for: move, playerCoordinates, cartesianBoard)
+        return createNewBoard(newBoard)
+    }
     
-    // try and move the player in that direction
-    
-    // need to know if the box moved too
-    
-    // need to check if the box or player moved off storage :(
-    
-    return []
+    return board
 }
 
 processSokobanMove(["####",
-                    "#P #",
+                    "#p #",
                     "#**#",
-                    "####"], "R")
+                    "####"], "D")
 
 class CodeChallenge3Tests: XCTestCase {
     func test_returnsTheBoardIfDirectionalInputIsInvalid() {
