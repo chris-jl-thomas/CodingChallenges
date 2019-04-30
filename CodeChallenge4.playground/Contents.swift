@@ -40,7 +40,7 @@ func convertVouchersStringToVoucherArray(_ vouchersString: String) -> [Voucher] 
     }
 }
 
-func sortVouchers(_ vouchers: [Voucher]) -> [Voucher] {
+func sortVouchersByDateThenTypeThenId(_ vouchers: [Voucher]) -> [Voucher] {
     return vouchers.sorted { (lhs, rhs) -> Bool in
         if lhs.expiryDate < rhs.expiryDate {
             return true
@@ -61,8 +61,8 @@ func sortVouchers(_ vouchers: [Voucher]) -> [Voucher] {
 
 func sortVouchers(_ vouchersString: String) -> String {
     let vouchers = convertVouchersStringToVoucherArray(vouchersString)
-    let sortedActiveVouchers = sortVouchers(vouchers.filter {$0.status == .Activated || $0.status == .Available})
-    let sortedRedeemedVouchers = sortVouchers(vouchers.filter {$0.status == .Redeemed || $0.status == .Expired})
+    let sortedActiveVouchers = sortVouchersByDateThenTypeThenId(vouchers.filter {$0.status == .Activated || $0.status == .Available})
+    let sortedRedeemedVouchers = sortVouchersByDateThenTypeThenId(vouchers.filter {$0.status == .Redeemed || $0.status == .Expired})
     let sortedVouchers = sortedActiveVouchers + sortedRedeemedVouchers
     return sortedVouchers.map{ return $0.expiryDate + ":" + $0.status.rawValue + ":" + $0.id }.joined(separator: ",")
 }
@@ -94,7 +94,7 @@ class CodeChallenge4Tests: XCTestCase {
         let voucher1 = Voucher(expiryDate: "190113", status: .Available, id: "aaaa")
         let voucher2 = Voucher(expiryDate: "190111", status: .Available, id: "bbbb")
         let voucher3 = Voucher(expiryDate: "190112", status: .Available, id: "cccc")
-        let sortedVouchers = sortVouchers([voucher1, voucher2, voucher3])
+        let sortedVouchers = sortVouchersByDateThenTypeThenId([voucher1, voucher2, voucher3])
         
         XCTAssertEqual(sortedVouchers[0], voucher2)
         XCTAssertEqual(sortedVouchers[1], voucher3)
@@ -106,7 +106,7 @@ class CodeChallenge4Tests: XCTestCase {
         let voucher2 = Voucher(expiryDate: "190113", status: .Activated, id: "bbbb")
         let voucher3 = Voucher(expiryDate: "190113", status: .Available, id: "aaaa")
         let voucher4 = Voucher(expiryDate: "190113", status: .Redeemed, id: "cccc")
-        let sortedVouchers = sortVouchers([voucher1, voucher2, voucher3, voucher4])
+        let sortedVouchers = sortVouchersByDateThenTypeThenId([voucher1, voucher2, voucher3, voucher4])
         
         XCTAssertEqual(sortedVouchers[0], voucher2)
         XCTAssertEqual(sortedVouchers[1], voucher3)
@@ -119,7 +119,7 @@ class CodeChallenge4Tests: XCTestCase {
         let voucher2 = Voucher(expiryDate: "190113", status: .Activated, id: "bbbb")
         let voucher3 = Voucher(expiryDate: "190113", status: .Activated, id: "aaaa")
         let voucher4 = Voucher(expiryDate: "190113", status: .Activated, id: "cccc")
-        let sortedVouchers = sortVouchers([voucher1, voucher2, voucher3, voucher4])
+        let sortedVouchers = sortVouchersByDateThenTypeThenId([voucher1, voucher2, voucher3, voucher4])
         
         XCTAssertEqual(sortedVouchers[0], voucher3)
         XCTAssertEqual(sortedVouchers[1], voucher2)
