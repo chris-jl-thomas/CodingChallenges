@@ -294,6 +294,15 @@ class CodeChallenge3Tests: XCTestCase {
                                 "#####"])
     }
     
+    func test_returnsTheBoardIfTwoBoxes() {
+        let result = processSokobanMove(["######",
+                                         "# bbp#",
+                                         "######"], "L")
+        XCTAssertEqual(result, ["######",
+                                "# bbp#",
+                                "######"])
+    }
+    
 }
 
 class TestObserver: NSObject, XCTestObservation {
