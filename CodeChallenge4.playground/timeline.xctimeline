@@ -3,7 +3,12 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "file:///Users/christhomas/JLIT/CodingChallenges/CodeChallenge4.playground#CharacterRangeLen=4534&amp;CharacterRangeLoc=2342&amp;EndingColumnNumber=0&amp;EndingLineNumber=152&amp;StartingColumnNumber=0&amp;StartingLineNumber=69&amp;Timestamp=578332872.41171"
+         documentLocation = "file:///Users/christhomas/JLIT/CodingChallenges/CodeChallenge4.playground#CharacterRangeLen=4847&amp;CharacterRangeLoc=2342&amp;EndingColumnNumber=0&amp;EndingLineNumber=158&amp;StartingColumnNumber=0&amp;StartingLineNumber=69&amp;Timestamp=578559891.406985"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/christhomas/JLIT/CodingChallenges/CodeChallenge4.playground#CharacterRangeLen=185&amp;CharacterRangeLoc=2343&amp;EndingColumnNumber=0&amp;EndingLineNumber=70&amp;StartingColumnNumber=1&amp;StartingLineNumber=69&amp;Timestamp=578559891.4071259"
          selectedRepresentationIndex = "0"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>

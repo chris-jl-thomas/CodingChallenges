@@ -67,7 +67,7 @@ func sortVouchers(_ vouchersString: String) -> String {
     return sortedVouchers.map{ return $0.expiryDate + ":" + $0.status.rawValue + ":" + $0.id }.joined(separator: ",")
 }
 
-sortVouchers("190112:Available:aaaa,190112:Activated:bbbb,190111:Available:cccc,190110:Redeemed:dddd,190110:Expired:eeee,190111:Activated:ffff,190111:Activated:gggg")
+sortVouchers("190112:Available:aaaa,190112:Activated:bbbb,190111:Available:cccc,190110:Redeemed:dddd,190110:Expired:eeee,190111:Activated:ffff,190111:Expired:gggg,190111:Redeemed:hhhh")
 
 class CodeChallenge4Tests: XCTestCase {
     func test_convertsValidStringToArray() {
@@ -133,6 +133,12 @@ class CodeChallenge4Tests: XCTestCase {
         let sortedString = sortVouchers(unsortedString)
         
         XCTAssertEqual(sortedString, expectedSortedString)
+    }
+    
+    func test_long() {
+        let unsorted = "190112:Available:aaaa,190112:Activated:bbbb,190111:Available:cccc,190110:Redeemed:dddd,190110:Expired:eeee,190111:Activated:ffff,190111:Expired:gggg,190111:Redeemed:hhhh"
+        let sorted = ""
+        XCTAssertEqual(unsorted, sorted)
     }
 }
 
