@@ -14,9 +14,9 @@ func myFilter<T>(array: [T], _ function:(T) -> Bool) -> [T] {
 }
 
 // MARK: Version 2 - Extension on Array. Again I take advantage of trailing closures
-extension Array {
-    func myFilter(_ function:(Element) -> Bool) -> [Element] {
-        var result = [Element]()
+extension Sequence {
+    func myFilter(_ function:(Element) -> Bool) -> ContiguousArray<Element> {
+        var result = ContiguousArray<Element>()
         for value in self {
             if function(value) {
                 result.append(value)
@@ -26,6 +26,11 @@ extension Array {
     }
 }
 
+let string = "123456789123456789"
+let filter = string.myFilter { $0 == "1" }
+let offical = string.filter { $0 == "1" }
+print(filter)
+print(offical)
 class CodeChallenge6Tests: XCTestCase {
     func test_filtersAnArrayOfIntsAndReturnsOnlyEvenNumbers() {
         let array = [1,2,3,4,5,6,7,8,9,10]
