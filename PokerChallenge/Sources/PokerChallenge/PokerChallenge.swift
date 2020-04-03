@@ -62,3 +62,34 @@ func getStraightFlush(player: Player, river: [Card]) -> [Card] {
     let flushHand = getFlushCards(player: player, river: river)
     return getStraightHand(player: nil, river: flushHand)
 }
+
+func getFourOfAKind(player: Player?, river: [Card]) -> [Card] {
+    let potentialHand = getCards(river: river, hand: player?.hand).getOrdered()
+    let fourOfAKindValue = potentialHand
+        .map { card in
+            card.value
+        }
+        .reduce(into: [:]) { counts, number in
+            counts[number, default: 0] += 1
+        }
+        .filter { (suit, count) in
+            count == 4
+        }
+        .keys
+        .first
+    
+    let fourOfAKindHand = potentialHand.filter { card in
+        card.value == fourOfAKindValue
+    }
+    let rest = potentialHand.filter { card in
+        card.value != fourOfAKindValue
+    }.getOrderedHand()
+    
+    return Array((fourOfAKindHand.orderBySuit() + rest.orderBySuit()).prefix(5))
+}
+
+extension Array where Element == Card {
+    func remove(where value: Value) -> [Card] {
+        self.filter { $0.value != value }
+    }
+}

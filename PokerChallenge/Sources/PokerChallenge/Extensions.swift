@@ -39,4 +39,10 @@ extension Array where Element == Card {
             .sorted { $0.value.rawValue > $1.value.rawValue }
         )
     }
+    
+    public func orderBySuit() -> [Card] {
+        Array(self
+            .sorted { $0.suit.rawValue < $1.suit.rawValue }
+        )
+    }
 }

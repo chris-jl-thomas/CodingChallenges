@@ -1,7 +1,10 @@
 import Foundation
 
-public enum Suit: Equatable {
-    case Clubs, Diamonds, Hearts, Spades
+public enum Suit: Int, Equatable {
+    case Clubs = 1
+    case Diamonds = 2
+    case Hearts = 3
+    case Spades = 4
 }
 
 public enum Value: Int {

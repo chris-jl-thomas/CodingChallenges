@@ -291,5 +291,73 @@ final class PokerChallengeTests: XCTestCase {
         XCTAssertEqual(player.getBestHand(river: array).type, .flush)
     }
     
+    func test_getFourOfAKind() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Spades, value: .Seven),
+                            card2: Card(suit: .Diamonds, value: .Seven))
+        
+        let array = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Hearts, value: .Six),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Spades, value: .Six)]
+        
+        let expected = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Spades, value: .Seven),
+            Card(suit: .Diamonds, value: .Six)]
+        
+        XCTAssertEqual(getFourOfAKind(player: player, river: array), expected)
+    }
+    
+    func test_getFourOfAKind_HighestIsGotFromPlayer() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Spades, value: .Seven),
+                            card2: Card(suit: .Diamonds, value: .Nine))
+        
+        let array = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Diamonds, value: .Six)]
+        
+        let expected = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Spades, value: .Seven),
+            Card(suit: .Diamonds, value: .Nine)]
+        
+        XCTAssertEqual(getFourOfAKind(player: player, river: array), expected)
+    }
+    
+    func test_getFourOfAKind_HighestIsGotFromRiver() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Spades, value: .Seven),
+                            card2: Card(suit: .Diamonds, value: .Nine))
+        
+        let array = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Diamonds, value: .Ten)]
+        
+        let expected = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Hearts, value: .Seven),
+            Card(suit: .Spades, value: .Seven),
+            Card(suit: .Diamonds, value: .Ten)]
+        
+        XCTAssertEqual(getFourOfAKind(player: player, river: array), expected)
+    }
     
 }
