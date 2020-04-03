@@ -46,3 +46,9 @@ extension Array where Element == Card {
         )
     }
 }
+
+extension Array where Element == Card {
+    func remove(where value: Value) -> [Card] {
+        self.filter { $0.value != value }
+    }
+}
