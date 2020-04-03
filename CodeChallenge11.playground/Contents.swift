@@ -1,90 +1,39 @@
-import UIKit
+struct Pub: Equatable {
+    let id: String
+    let beers: [String]
+}
 
-public struct Identifier<T, Value> {
+var pubs = [
+    Pub(id: "abc", beers: ["a", "b", "c"]),
+    Pub(id: "abc", beers: ["d", "e", "f"]),
+    Pub(id: "def", beers: ["a", "b", "c"]),
+    Pub(id: "abc", beers: ["g", "h", "i"])
+]
+
+func sort(pubs: [Pub]) -> [Pub] {
+    var toSort = pubs
+    toSort.sort { $0.id < $1.id}
+    toSort
+    guard let first = toSort.first else { return [] }
+    return mergePubs(pub: first, stillToSort: Array(toSort.dropFirst()), result: [])
+}
+
+func mergePubs(pub: Pub, stillToSort: [Pub], result: [Pub]) -> [Pub] {
     
-    fileprivate let value: Value
-    
-    /// Initialize an identifier with a string.
-    ///
-    /// - Parameter identifier: The original string identifier.
-    public init(_ identifier: Value) {
-        self.value = identifier
+    guard let first = stillToSort.first else { return result }
+    var results = result.map { $0 }
+    let newPub: Pub
+    if pub.id == first.id {
+        newPub = Pub(id: pub.id, beers: pub.beers + first.beers)
+    } else {
+        newPub = pub
     }
-}
-
-extension Identifier: Equatable where Value: Equatable {}
-
-extension Identifier: Hashable where Value: Hashable {}
-
-extension String {
     
-    /// Initialize a string with a given identifier to use the raw string value,
-    /// likely to be when constructing API requests.
-    ///
-    /// - Parameter identifier: The identifier.
-    public init<T>(_ identifier: Identifier<T, String>) {
-        self = identifier.value
-    }
-}
-
-extension Int {
+    results.append(newPub)
     
-    /// Initialize an integer with a given identifier to use the raw integer
-    /// value, likely to be when constructing API requests.
-    ///
-    /// - Parameter identifier: The identifier.
-    public init<T>(_ identifier: Identifier<T, Int>) {
-        self = identifier.value
-    }
+    return mergePubs(pub: first, stillToSort: Array(stillToSort.dropFirst()), result: results)
 }
 
-extension Identifier: ExpressibleByIntegerLiteral where T: Any, Value == Int {
-    
-    public init(integerLiteral value: Int) {
-        self.init(value)
-    }
-}
+let it = sort(pubs: pubs)
 
-extension Identifier: ExpressibleByUnicodeScalarLiteral where T: Any, Value == String {
-    
-    public init(unicodeScalarLiteral value: String) {
-        self.init(value)
-    }
-}
-
-extension Identifier: ExpressibleByExtendedGraphemeClusterLiteral where T: Any, Value == String {
-    
-    public init(extendedGraphemeClusterLiteral value: String) {
-        self.init(value)
-    }
-}
-
-extension Identifier: ExpressibleByStringLiteral where T: Any, Value == String {
-    
-    public init(stringLiteral value: String) {
-        self.init(value)
-    }
-}
-
-extension Identifier: Comparable where Value: Comparable {
-    
-    // swiftlint:disable capitalized_method
-    public static func < (lhs: Identifier<T, Value>, rhs: Identifier<T, Value>) -> Bool {
-        // swiftlint:enable capitalized_method
-        return lhs.value < rhs.value
-    }
-}
-
-extension Identifier: CustomDebugStringConvertible {
-    
-    public var debugDescription: String {
-        return String(describing: value)
-    }
-}
-
-
-
-func fetchData() {
-    
-}
-
+it
