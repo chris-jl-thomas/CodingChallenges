@@ -264,6 +264,7 @@ final class PokerChallengeTests: XCTestCase {
             Card(suit: .Diamonds, value: .Six)]
         
         XCTAssertEqual(player.getBestHand(river: array).cards, expected)
+        XCTAssertEqual(player.getBestHand(river: array).type, .straightFlush)
     }
     
     func test_getBestPlayerHand_flushGotStraightAvailable() {
@@ -287,6 +288,7 @@ final class PokerChallengeTests: XCTestCase {
             Card(suit: .Diamonds, value: .Six)]
         
         XCTAssertEqual(player.getBestHand(river: array).cards, expected)
+        XCTAssertEqual(player.getBestHand(river: array).type, .flush)
     }
     
     
