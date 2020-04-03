@@ -143,10 +143,10 @@ final class PokerChallengeTests: XCTestCase {
         
         let expected: [Card] = [
             Card(suit: .Diamonds, value: .Ten),
-        Card(suit: .Diamonds, value: .Nine),
-        Card(suit: .Diamonds, value: .Eight),
-        Card(suit: .Spades, value: .Seven),
-        Card(suit: .Hearts, value: .Six)]
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Spades, value: .Seven),
+            Card(suit: .Hearts, value: .Six)]
         
         let player = Player(name: "Alan",
                             bet: 11.00,
@@ -167,10 +167,10 @@ final class PokerChallengeTests: XCTestCase {
         
         let expected: [Card] = [
             Card(suit: .Clubs, value: .Ten),
-        Card(suit: .Diamonds, value: .Nine),
-        Card(suit: .Diamonds, value: .Eight),
-        Card(suit: .Spades, value: .Seven),
-        Card(suit: .Hearts, value: .Six)]
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Spades, value: .Seven),
+            Card(suit: .Hearts, value: .Six)]
         
         let player = Player(name: "Alan",
                             bet: 11.00,
@@ -229,10 +229,10 @@ final class PokerChallengeTests: XCTestCase {
         
         let expected: [Card] = [
             Card(suit: .Diamonds, value: .Ten),
-        Card(suit: .Diamonds, value: .Nine),
-        Card(suit: .Diamonds, value: .Eight),
-        Card(suit: .Diamonds, value: .Seven),
-        Card(suit: .Diamonds, value: .Six)]
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six)]
         
         let player = Player(name: "Alan",
                             bet: 11.00,
@@ -241,6 +241,52 @@ final class PokerChallengeTests: XCTestCase {
         
         let straight = getStraightFlush(player: player, river: array)
         XCTAssertEqual(straight, expected)
+    }
+    
+    func test_getBestPlayerHand_straightFlush() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Diamonds, value: .Ten),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Four)]
+        
+        let expected: [Card] = [
+            Card(suit: .Diamonds, value: .Ten),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six)]
+        
+        XCTAssertEqual(player.getBestHand(river: array), expected)
+    }
+    
+    func test_getBestPlayerHand_flush() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Diamonds, value: .Two),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Four)]
+        
+        let expected: [Card] = [
+            Card(suit: .Diamonds, value: .King),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six)]
+        
+        XCTAssertEqual(player.getBestHand(river: array), expected)
     }
     
 }
