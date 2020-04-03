@@ -29,3 +29,9 @@ public struct Card: Equatable {
         self.value = value
     }
 }
+
+public enum HandType {
+    case .straightFlush
+    case .flush
+    case .straight
+}
