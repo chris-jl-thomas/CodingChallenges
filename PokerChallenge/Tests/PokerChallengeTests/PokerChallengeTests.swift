@@ -360,4 +360,45 @@ final class PokerChallengeTests: XCTestCase {
         XCTAssertEqual(getFourOfAKind(player: player, river: array), expected)
     }
     
+    func test_getFourOfAKind_NoFourOfAKind() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Spades, value: .Seven),
+                            card2: Card(suit: .Diamonds, value: .Nine))
+        
+        let array = [
+            Card(suit: .Clubs, value: .Seven),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Six),
+            Card(suit: .Diamonds, value: .Ten)]
+        
+        XCTAssertEqual(getFourOfAKind(player: player, river: array), [])
+    }
+    
+    func test_bestHand_fourOfAKind() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Clubs, value: .Eight),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Four)]
+        
+        let expected: [Card] = [
+            Card(suit: .Clubs, value: .Eight),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Diamonds, value: .King)]
+        
+        let bestHand = player.getBestHand(river: array)
+        XCTAssertEqual(bestHand.cards, expected)
+        XCTAssertEqual(bestHand.type, .fourOfAKind)
+    }
 }
+    

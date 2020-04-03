@@ -35,6 +35,7 @@ public struct Card: Equatable {
 
 public enum Hand {
     case straightFlush
+    case fourOfAKind
     case flush
     case straight
     case highest

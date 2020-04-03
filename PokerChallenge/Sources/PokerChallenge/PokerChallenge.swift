@@ -78,11 +78,15 @@ func getFourOfAKind(player: Player?, river: [Card]) -> [Card] {
         .keys
         .first
     
+    guard let unwrappedValue = fourOfAKindValue else {
+        return []
+    }
+    
     let fourOfAKindHand = potentialHand.filter { card in
-        card.value == fourOfAKindValue
+        card.value == unwrappedValue
     }
     let rest = potentialHand.filter { card in
-        card.value != fourOfAKindValue
+        card.value != unwrappedValue
     }.getOrderedHand()
     
     return Array((fourOfAKindHand.orderBySuit() + rest.orderBySuit()).prefix(5))

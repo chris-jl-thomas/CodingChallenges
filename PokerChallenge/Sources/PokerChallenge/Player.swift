@@ -37,6 +37,11 @@ extension Player {
             return (.straightFlush, hand)
         }
         
+        hand = getFourOfAKind(player: self, river: river)
+        if !hand.isEmpty {
+            return (.fourOfAKind, hand)
+        }
+        
         hand = getBestFlushHand(player: self, river: river)
         if !hand.isEmpty {
             return (.flush, hand)
