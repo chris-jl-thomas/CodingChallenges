@@ -29,23 +29,23 @@ public struct Player {
 
 
 extension Player {
-    func getBestHand(river: [Card]) -> [Card] {
+    func getBestHand(river: [Card]) -> (type: Hand, cards: [Card]) {
         var hand = river
         hand = getStraightFlush(player: self, river: river)
         if !hand.isEmpty {
-                return hand
+            return (.straightFlush, hand)
         }
         
         hand = getBestFlushHand(player: self, river: river)
         if !hand.isEmpty {
-                return hand
+            return (.flush, hand)
         }
         
         hand = getStraightHand(player: self, river: river)
         if !hand.isEmpty {
-                return hand
+            return (.straight, hand)
         }
         
-        return river
+        return (.highest, river)
     }
 }

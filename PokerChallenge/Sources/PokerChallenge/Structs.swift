@@ -30,8 +30,9 @@ public struct Card: Equatable {
     }
 }
 
-public enum HandType {
-    case .straightFlush
-    case .flush
-    case .straight
+public enum Hand {
+    case straightFlush
+    case flush
+    case straight
+    case highest
 }
