@@ -42,6 +42,11 @@ extension Player {
             return (.fourOfAKind, hand)
         }
         
+        hand = getFullHouseHand(player: self, river: river)
+        if !hand.isEmpty {
+            return (.fullHouse, hand)
+        }
+        
         hand = getBestFlushHand(player: self, river: river)
         if !hand.isEmpty {
             return (.flush, hand)

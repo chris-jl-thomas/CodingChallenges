@@ -400,5 +400,97 @@ final class PokerChallengeTests: XCTestCase {
         XCTAssertEqual(bestHand.cards, expected)
         XCTAssertEqual(bestHand.type, .fourOfAKind)
     }
+    
+    func test_getFullHouse_8sAnd9s() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Diamonds, value: .Four)]
+        
+        let expected: [Card] = [
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Nine)]
+        
+        let hand = getFullHouseHand(player: player, river: array)
+        XCTAssertEqual(hand, expected)
+    }
+    
+    func test_getFullHouse_emptyReturn() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Seven),
+            Card(suit: .Diamonds, value: .Four)]
+        
+        let expected: [Card] = []
+        
+        let hand = getFullHouseHand(player: player, river: array)
+        XCTAssertEqual(hand, expected)
+    }
+    
+    func test_getFullHouse_fromRiver() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .King),
+                            card2: Card(suit: .Diamonds, value: .Seven))
+        
+        let array = [
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Diamonds, value: .Nine)]
+        
+        let expected: [Card] = [
+        Card(suit: .Diamonds, value: .Eight),
+        Card(suit: .Hearts, value: .Eight),
+        Card(suit: .Spades, value: .Eight),
+        Card(suit: .Clubs, value: .Nine),
+        Card(suit: .Diamonds, value: .Nine)]
+        
+        let hand = getFullHouseHand(player: player, river: array)
+        XCTAssertEqual(hand, expected)
+    }
+    
+    func test_bestHand_bestFullHouse() {
+        let player = Player(name: "Alan",
+                            bet: 11.00,
+                            card1: Card(suit: .Diamonds, value: .Seven),
+                            card2: Card(suit: .Diamonds, value: .Eight))
+        
+        let array = [
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Nine),
+            Card(suit: .Hearts, value: .Seven)]
+        
+        let expected: [Card] = [
+            Card(suit: .Diamonds, value: .Eight),
+            Card(suit: .Hearts, value: .Eight),
+            Card(suit: .Spades, value: .Eight),
+            Card(suit: .Clubs, value: .Nine),
+            Card(suit: .Diamonds, value: .Nine)]
+        
+        let bestHand = player.getBestHand(river: array)
+        XCTAssertEqual(bestHand.cards, expected)
+        XCTAssertEqual(bestHand.type, .fullHouse)
+    }
 }
     

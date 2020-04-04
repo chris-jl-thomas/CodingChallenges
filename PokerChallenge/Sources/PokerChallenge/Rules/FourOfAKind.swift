@@ -1,7 +1,7 @@
 import Foundation
 
 func getFourOfAKind(player: Player?, river: [Card]) -> [Card] {
-    let potentialHand = getCards(river: river, hand: player?.hand).getOrdered()
+    let potentialHand = getCards(river: river, hand: player?.hand)
     let fourOfAKindValue = potentialHand
         .map { card in
             card.value
