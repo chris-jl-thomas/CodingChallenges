@@ -57,6 +57,11 @@ extension Player {
             return (.straight, hand)
         }
         
+        hand = getThreeOfAKindHand(player: self, river: river)
+        if !hand.isEmpty {
+            return (.threeOfAKind, hand)
+        }
+        
         return (.highest, river)
     }
 }

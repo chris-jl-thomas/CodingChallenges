@@ -39,5 +39,6 @@ public enum Hand {
     case fullHouse
     case flush
     case straight
+    case threeOfAKind
     case highest
 }
