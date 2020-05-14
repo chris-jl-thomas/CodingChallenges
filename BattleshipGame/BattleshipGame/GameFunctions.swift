@@ -22,15 +22,54 @@ class GameFunctions {
             }
         }
         
-        board = GameBoard(squares: squares, numberOfHits: 0)
+        board = GameBoard(squares: squares)
     }
     
     
     
-    func makeGuess(shots: [String], player: String, game: Game) {
-        resource.makeAPIRequest(with: shots, player: player, game: game) { result in
-            self.lastResult = result
-            print(result)
+    func makeGuess(shots: [Square], player: String, game: Game) {
+        
+        let shotsString: [String] = shots.map { square in
+            return square.column.description + "\(square.row.rawValue)"
         }
+        
+        resource.makeAPIRequest(with: shotsString, player: player, game: game) { result in
+            self.createBoardFromResult(shots: shots, result: result)
+        }
+    }
+    
+    func createBoardFromResult(shots: [Square], result: APIResponse) {
+        board?.totalHits += shots.count
+        
+        let newSquares = result.results.enumerated().map { (index, content) in
+            Square(column: shots[index].column, row: shots[index].row, content: SquareContent(rawValue: content) ?? .unknown)
+        }
+        
+        newSquares.forEach { square in
+            board?.replace(square: square)
+        }
+    }
+    
+}
+
+extension GameBoard {
+    func replace(square: Square) {
+        let index = self.squares.firstIndex { (oldSquare) -> Bool in
+            oldSquare.column == square.column && oldSquare.row == square.row
+        }
+        
+        guard let unwrapped = index else { return }
+        
+        self.squares[unwrapped] = square
+        
+    }
+    
+    func gameOver() -> Bool {
+        let contents = squares.map { $0.content }
+        let sunk = contents.filter { (content) -> Bool in
+            content == .sunk
+        }
+        
+        return sunk.count == 18
     }
 }

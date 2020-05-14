@@ -8,9 +8,15 @@
 
 import Foundation
 
-struct GameBoard {
-    let squares: [Square]
-    var numberOfHits: Int
+class GameBoard {
+    var squares: [Square]
+    var numberOfHits: Int = 0
+    var numberOfSunks: Int = 0
+    var totalHits: Int = 0
+    
+    init(squares: [Square]) {
+        self.squares = squares
+    }
 }
 
 struct Square: Hashable {
@@ -20,27 +26,50 @@ struct Square: Hashable {
 }
 
 
-enum SquareContent {
-    case unknown
-    case hit
-    case sunk
-    case miss
+enum SquareContent: String {
+    case unknown = ""
+    case hit = "H"
+    case sunk = "S"
+    case miss = "M"
 }
 
-enum Column: Hashable, Equatable {
+enum Column: Int, Equatable, CaseIterable {
     
-    static var allCases: [Column] = [.A(), .B(), .C(), .D(), .E(), .F(), .G(), .H(), .I(), .J()]
+    case A = 0
+    case B = 1
+    case C = 2
+    case D = 3
+    case E = 4
+    case F = 5
+    case G = 6
+    case H = 7
+    case I = 8
+    case J = 9
     
-    case A(value: String = "A", location: Int = 0)
-    case B(value: String = "B", location: Int = 1)
-    case C(value: String = "C", location: Int = 2)
-    case D(value: String = "D", location: Int = 3)
-    case E(value: String = "E", location: Int = 4)
-    case F(value: String = "F", location: Int = 5)
-    case G(value: String = "G", location: Int = 6)
-    case H(value: String = "H", location: Int = 7)
-    case I(value: String = "I", location: Int = 8)
-    case J(value: String = "J", location: Int = 9)
+    var description: String {
+        switch self {
+        case .A:
+            return "A"
+        case .B:
+            return "B"
+        case .C:
+            return "C"
+        case .D:
+            return "D"
+        case .E:
+            return "E"
+        case .F:
+            return "F"
+        case .G:
+            return "G"
+        case .H:
+            return "H"
+        case .I:
+            return "I"
+        case .J:
+            return "J"
+        }
+    }
 }
 
 enum Row: Int, CaseIterable {
