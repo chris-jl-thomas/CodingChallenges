@@ -27,4 +27,30 @@ class BattleshipGameTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
     }
+    
+    func test_fire() {
+        let game = GameFunctions()
+        
+        game.startGame()
+        _ = game.findingShot()
+        XCTAssertEqual(game.board?.totalHits, 1)
+    }
+    
+    func test_fire_hit() {
+          let game = GameFunctions()
+          
+          game.startGame()
+          _ = game.findNextHit()
+        XCTAssertEqual(game.board?.numberOfHits, 1)
+      }
+    
+    func test_find_All() {
+        let game = GameFunctions()
+        
+        game.startGame()
+        game.findAll()
+        
+        print(game.board?.totalHits)
+        XCTAssertEqual(game.board?.numberOfHits, 16)
+    }
 }

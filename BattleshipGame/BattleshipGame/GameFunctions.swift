@@ -15,6 +15,7 @@ class GameFunctions {
     var board: GameBoard?
     let player: String = "TestRandC"
     let game: Game = .test
+    let group = DispatchGroup()
     
     func startGame() {
         
@@ -27,7 +28,54 @@ class GameFunctions {
         board = GameBoard(squares: squares)
     }
     
-    func findingShot() -> Bool {
+    func runGame() {
+        while board?.numberOfSunks != 18 {
+            guard let firstHit = findNextHit() else {
+                return
+            }
+           // kill(startingSquare: firstHit)
+        }
+        print(board?.totalHits)
+    }
+    
+//    func kill(startingSquare: Square) {
+//       rowShot(startingSquare: startingSquare)
+//    }
+//
+//    func rowShot(startingSquare: Square) -> Bool {
+//        var squares: [Square] = []
+//
+//        let numberOfShots = min( 4, 9 - startingSquare.row.rawValue)
+//
+//        for i in 1...numberOfShots {
+//            guard let row = Row(rawValue: startingSquare.row.rawValue + i)
+//                else {
+//                    return
+//            }
+//            squares.append(Square(column: startingSquare.column, row: row, content: .unknown))
+//        }
+//
+//        makeGuess(shots: squares, player: player, game: game)
+//    }
+    
+    func findNextHit() -> Square? {
+        var lastSquareShot: Square? = nil
+        
+        while lastSquareShot?.content != .hit {
+            guard let square = findingShot() else { return nil }
+            lastSquareShot = square
+        }
+        return lastSquareShot
+    }
+    
+    func findAll() {
+        
+        while (board!.numberOfHits + board!.numberOfSunks) != 18 {
+            findNextHit()
+        }
+    }
+    
+    func findingShot() -> Square? {
         let index = board?.squares.firstIndex(where: { (square) -> Bool in
             square.content == .unknown
         })
@@ -36,12 +84,12 @@ class GameFunctions {
             let unwrapped = index,
             let square = board?.squares[unwrapped]
         else {
-            return false
+            return nil
         }
         
         makeGuess(shots: [square], player: player, game: game)
         
-        return board?.squares[unwrapped].content == .hit
+        return board?.squares[unwrapped]
     }
     
     
@@ -50,11 +98,15 @@ class GameFunctions {
         let shotsString: [String] = shots.map { square in
             return square.column.description + "\(square.row.rawValue)"
         }
-        
+        group .enter()
         resource.makeAPIRequest(with: shotsString, player: player, game: game) { result in
             self.createBoardFromResult(shots: shots, result: result)
+            self.group.leave()
         }
+        _ = group.wait(timeout: .distantFuture)
     }
+    
+
     
     func createBoardFromResult(shots: [Square], result: APIResponse) {
         board?.totalHits += shots.count

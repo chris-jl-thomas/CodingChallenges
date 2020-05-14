@@ -10,8 +10,19 @@ import Foundation
 
 class GameBoard {
     var squares: [Square]
-    var numberOfHits: Int = 0
-    var numberOfSunks: Int = 0
+    var numberOfHits: Int {
+        let hits = squares.filter { (square) -> Bool in
+            square.content == .hit
+        }
+        return hits.count
+    }
+    var numberOfSunks: Int {
+        let hits = squares.filter { (square) -> Bool in
+            square.content == .sunk
+        }
+        return hits.count
+    }
+    
     var totalHits: Int = 0
     
     init(squares: [Square]) {
