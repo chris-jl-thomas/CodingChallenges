@@ -13,6 +13,8 @@ class GameFunctions {
     let resource = Resource()
     var lastResult: APIResponse?
     var board: GameBoard?
+    let player: String = "TestRandC"
+    let game: Game = .test
     
     func startGame() {
         
@@ -25,6 +27,22 @@ class GameFunctions {
         board = GameBoard(squares: squares)
     }
     
+    func findingShot() -> Bool {
+        let index = board?.squares.firstIndex(where: { (square) -> Bool in
+            square.content == .unknown
+        })
+        
+        guard
+            let unwrapped = index,
+            let square = board?.squares[unwrapped]
+        else {
+            return false
+        }
+        
+        makeGuess(shots: [square], player: player, game: game)
+        
+        return board?.squares[unwrapped].content == .hit
+    }
     
     
     func makeGuess(shots: [Square], player: String, game: Game) {
