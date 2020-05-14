@@ -53,4 +53,14 @@ class BattleshipGameTests: XCTestCase {
         print(game.board?.totalHits)
         XCTAssertEqual(game.board?.numberOfHits, 16)
     }
+    
+    func test_find_all_fireColumn_fireRow() {
+        let game = GameFunctions()
+        
+        game.startGame()
+        game.runGame()
+        
+        print(game.board?.totalHits)
+        XCTAssertEqual(game.board!.numberOfHits + game.board!.numberOfSunks, 18)
+    }
 }

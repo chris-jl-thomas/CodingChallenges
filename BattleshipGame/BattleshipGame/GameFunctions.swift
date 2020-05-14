@@ -29,34 +29,51 @@ class GameFunctions {
     }
     
     func runGame() {
-        while board?.numberOfSunks != 18 {
+        guard let board = board else {return}
+        while (board.numberOfSunks + board.numberOfHits) != 18 && board.totalHits < 100 {
             guard let firstHit = findNextHit() else {
                 return
             }
-           // kill(startingSquare: firstHit)
+           kill(startingSquare: firstHit)
         }
-        print(board?.totalHits)
+        print(board.totalHits)
     }
     
-//    func kill(startingSquare: Square) {
-//       rowShot(startingSquare: startingSquare)
-//    }
-//
-//    func rowShot(startingSquare: Square) -> Bool {
-//        var squares: [Square] = []
-//
-//        let numberOfShots = min( 4, 9 - startingSquare.row.rawValue)
-//
-//        for i in 1...numberOfShots {
-//            guard let row = Row(rawValue: startingSquare.row.rawValue + i)
-//                else {
-//                    return
-//            }
-//            squares.append(Square(column: startingSquare.column, row: row, content: .unknown))
-//        }
-//
-//        makeGuess(shots: squares, player: player, game: game)
-//    }
+    func kill(startingSquare: Square) {
+       rowShot(startingSquare: startingSquare)
+    }
+
+    func rowShot(startingSquare: Square) {
+        var squares: [Square] = []
+
+        let numberOfShots = min( 4, 9 - startingSquare.row.rawValue)
+
+        for i in 1...numberOfShots {
+            guard let row = Row(rawValue: startingSquare.row.rawValue + i)
+                else {
+                    return
+            }
+            squares.append(Square(column: startingSquare.column, row: row, content: .unknown))
+        }
+
+        makeGuess(shots: squares, player: player, game: game)
+    }
+    
+    func columnShot(startingSquare: Square) {
+        var squares: [Square] = []
+
+        let numberOfShots = min( 4, 9 - startingSquare.column.rawValue)
+
+        for i in 1...numberOfShots {
+            guard let column = Column(rawValue: startingSquare.column.rawValue + i)
+                else {
+                    return
+            }
+            squares.append(Square(column: column, row: startingSquare.row, content: .unknown))
+        }
+
+        makeGuess(shots: squares, player: player, game: game)
+    }
     
     func findNextHit() -> Square? {
         var lastSquareShot: Square? = nil
