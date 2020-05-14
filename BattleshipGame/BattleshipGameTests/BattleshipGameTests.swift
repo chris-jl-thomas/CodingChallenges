@@ -26,8 +26,5 @@ class BattleshipGameTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 5)
-        
     }
-
-
 }

@@ -13,6 +13,7 @@
 		504DFDB4246D671600FC6556 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DFDB3246D671600FC6556 /* URLSession.swift */; };
 		504DFDB6246D673200FC6556 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DFDB5246D673200FC6556 /* Result.swift */; };
 		504DFDB8246D691000FC6556 /* GameFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DFDB7246D691000FC6556 /* GameFunctions.swift */; };
+		504DFDBA246D70B300FC6556 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504DFDB9246D70B300FC6556 /* GameBoard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 		504DFDB3246D671600FC6556 /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		504DFDB5246D673200FC6556 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		504DFDB7246D691000FC6556 /* GameFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFunctions.swift; sourceTree = "<group>"; };
+		504DFDB9246D70B300FC6556 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 		504DFD8F246D66FB00FC6556 = {
 			isa = PBXGroup;
 			children = (
+				504DFDB9246D70B300FC6556 /* GameBoard.swift */,
 				504DFD9B246D66FB00FC6556 /* BattleshipGame */,
 				504DFDA6246D66FB00FC6556 /* BattleshipGameTests */,
 				504DFD9A246D66FB00FC6556 /* Products */,
@@ -205,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				504DFDBA246D70B300FC6556 /* GameBoard.swift in Sources */,
 				504DFDB6246D673200FC6556 /* Result.swift in Sources */,
 				504DFDB4246D671600FC6556 /* URLSession.swift in Sources */,
 				504DFDB8246D691000FC6556 /* GameFunctions.swift in Sources */,
