@@ -21,7 +21,7 @@ class Resource {
             URLQueryItem(name: "player", value: player)
         ]
         
-        guard let url = urlComponents.url else { return }
+        guard let url = urlComponents.url else { return } 
         
         self.cancellable = URLSession.shared.dataTaskPublisher(for: url)
             .tryMap { output in
